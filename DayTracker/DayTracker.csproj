@@ -55,6 +55,12 @@
     <Compile Include="Controls\TaskList.Designer.cs">
       <DependentUpon>TaskList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TimePunchList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TimePunchList.Designer.cs">
+      <DependentUpon>TimePunchList.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     <Compile Include="TodoTask.cs" />
     <EmbeddedResource Include="Controls\TaskList.resx">
       <DependentUpon>TaskList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TimePunchList.resx">
+      <DependentUpon>TimePunchList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
