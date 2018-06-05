@@ -134,6 +134,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Paomedia-Small-N-Flat-Calendar-clock.ico" />
+    <None Include="Resources\hourglass_go.png" />
+    <None Include="Resources\hourglass_delete.png" />
     <None Include="Resources\clock_delete.png" />
     <None Include="Resources\clock_stop.png" />
     <None Include="Resources\clock_play.png" />

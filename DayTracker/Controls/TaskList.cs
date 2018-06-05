@@ -13,9 +13,50 @@ namespace DayTracker.Controls
 {
 	public partial class TaskList : UserControl
 	{
-		private string TodoListPath { get { return Path.Combine( Application.UserAppDataPath, "tasks.txt" ); } }
+		private string TodoListPath { get { return Path.Combine( Application.UserAppDataPath, Filename ); } }
 
 		private List<TodoTask> TodoTasks = new List<TodoTask>();
+
+		[ Category( "Behavior" ) ]
+		[ Description( "Specifies the filename for backing storage." ) ]
+		[ DefaultValue( "tasks.txt" ) ]
+		public string Filename { get; set; } = "tasks.txt";
+
+		private TaskList _PromoteTarget = null;
+
+		[Category( "Behavior" )]
+		[Description( "Specifies the target task list to promote to." )]
+		[DefaultValue( null )]
+		public TaskList PromoteTarget
+		{
+			get { return _PromoteTarget; }
+			set
+			{
+				if( value != _PromoteTarget )
+				{
+					_PromoteTarget = value;
+					buttonPromote.Visible = PromoteTarget != null;
+				}
+			}
+		}
+
+		private TaskList _DemoteTarget = null;
+
+		[Category( "Behavior" )]
+		[Description( "Specifies the target task list to demote to." )]
+		[DefaultValue( null )]
+		public TaskList DemoteTarget
+		{
+			get { return _DemoteTarget; }
+			set
+			{
+				if( value != _DemoteTarget )
+				{
+					_DemoteTarget = value;
+					buttonDemote.Visible = DemoteTarget != null;
+				}
+			}
+		}
 
 		public TaskList()
 		{
@@ -108,7 +149,7 @@ namespace DayTracker.Controls
 			TodoTasks.RemoveAt( OldIndex );
 			TodoTasks.Insert( NewIndex, TodoTask );
 		}
-		private void RemoveTask()
+		private TodoTask RemoveTask()
 		{
 			var listItem = listTasks.SelectedItems[ 0 ];
 			listTasks.Items.Remove( listItem );
@@ -119,6 +160,15 @@ namespace DayTracker.Controls
 			{
 				TodoTasks.Remove( TodoTask );
 			}
+
+			return TodoTask;
+		}
+
+		internal void AddTask( TodoTask NewTask )
+		{
+			TodoTasks.Add( NewTask );
+			AddTaskToUI( NewTask );
+			SaveTasks();
 		}
 
 		private void buttonAdd_Click( object sender, EventArgs e )
@@ -213,6 +263,30 @@ namespace DayTracker.Controls
 		private void TaskList_Resize( object sender, EventArgs e )
 		{
 			UpdateColumnWidth();
+		}
+
+		private void buttonPromote_Click( object sender, EventArgs e )
+		{
+			if( PromoteTarget == null ) return;
+
+			if( listTasks.SelectedIndices.Count <= 0 ) return;
+
+			var TodoTask = RemoveTask();
+			PromoteTarget.AddTask( TodoTask );
+
+			SaveTasks();
+		}
+
+		private void buttonDemote_Click( object sender, EventArgs e )
+		{
+			if( DemoteTarget == null ) return;
+
+			if( listTasks.SelectedIndices.Count <= 0 ) return;
+
+			var TodoTask = RemoveTask();
+			DemoteTarget.AddTask( TodoTask );
+
+			SaveTasks();
 		}
 	}
 }
